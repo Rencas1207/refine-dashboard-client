@@ -3,51 +3,51 @@ import {
   Authenticated,
   GitHubBanner,
   Refine,
-} from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+} from '@refinedev/core';
+import { DevtoolsPanel, DevtoolsProvider } from '@refinedev/devtools';
+import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
 
 import {
   ErrorComponent,
   notificationProvider,
   RefineSnackbarProvider,
   ThemedLayoutV2,
-} from "@refinedev/mui";
+} from '@refinedev/mui';
 
-import CssBaseline from "@mui/material/CssBaseline";
-import GlobalStyles from "@mui/material/GlobalStyles";
+import CssBaseline from '@mui/material/CssBaseline';
+import GlobalStyles from '@mui/material/GlobalStyles';
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
-} from "@refinedev/react-router-v6";
-import dataProvider from "@refinedev/simple-rest";
-import axios from "axios";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { Header } from "./components/header";
-import { ColorModeContextProvider } from "./contexts/color-mode";
-import { CredentialResponse } from "./interfaces/google";
+} from '@refinedev/react-router-v6';
+import dataProvider from '@refinedev/simple-rest';
+import axios from 'axios';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { Header } from './components/header';
+import { ColorModeContextProvider } from './contexts/color-mode';
+import { CredentialResponse } from './interfaces/google';
 import {
   BlogPostCreate,
   BlogPostEdit,
   BlogPostList,
   BlogPostShow,
-} from "./pages/blog-posts";
+} from './pages/blog-posts';
 import {
   CategoryCreate,
   CategoryEdit,
   CategoryList,
   CategoryShow,
-} from "./pages/categories";
-import { Login } from "./pages/login";
-import { parseJwt } from "./utils/parse-jwt";
+} from './pages/categories';
+import { Login } from './pages/login';
+import { parseJwt } from './utils/parse-jwt';
 
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (config.headers) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return config;
@@ -60,18 +60,18 @@ function App() {
 
       if (profileObj) {
         localStorage.setItem(
-          "user",
+          'user',
           JSON.stringify({
             ...profileObj,
             avatar: profileObj.picture,
           })
         );
 
-        localStorage.setItem("token", `${credential}`);
+        localStorage.setItem('token', `${credential}`);
 
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: '/',
         };
       }
 
@@ -80,11 +80,11 @@ function App() {
       };
     },
     logout: async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
-      if (token && typeof window !== "undefined") {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+      if (token && typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         axios.defaults.headers.common = {};
         window.google?.accounts.id.revoke(token, () => {
           return {};
@@ -93,7 +93,7 @@ function App() {
 
       return {
         success: true,
-        redirectTo: "/login",
+        redirectTo: '/login',
       };
     },
     onError: async (error) => {
@@ -101,7 +101,7 @@ function App() {
       return { error };
     },
     check: async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       if (token) {
         return {
@@ -112,16 +112,16 @@ function App() {
       return {
         authenticated: false,
         error: {
-          message: "Check failed",
-          name: "Token not found",
+          message: 'Check failed',
+          name: 'Token not found',
         },
         logout: true,
-        redirectTo: "/login",
+        redirectTo: '/login',
       };
     },
     getPermissions: async () => null,
     getIdentity: async () => {
-      const user = localStorage.getItem("user");
+      const user = localStorage.getItem('user');
       if (user) {
         return JSON.parse(user);
       }
@@ -136,31 +136,31 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <CssBaseline />
-          <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
+          <GlobalStyles styles={{ html: { WebkitFontSmoothing: 'auto' } }} />
           <RefineSnackbarProvider>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                dataProvider={dataProvider('https://api.fake-rest.refine.dev')}
                 notificationProvider={notificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
                 resources={[
                   {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
+                    name: 'blog_posts',
+                    list: '/blog-posts',
+                    create: '/blog-posts/create',
+                    edit: '/blog-posts/edit/:id',
+                    show: '/blog-posts/show/:id',
                     meta: {
                       canDelete: true,
                     },
                   },
                   {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
+                    name: 'categories',
+                    list: '/categories',
+                    create: '/categories/create',
+                    edit: '/categories/edit/:id',
+                    show: '/categories/show/:id',
                     meta: {
                       canDelete: true,
                     },
@@ -170,7 +170,7 @@ function App() {
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
                   useNewQueryKeys: true,
-                  projectId: "f6j0m9-PJlsBI-1BpFyn",
+                  projectId: 'f6j0m9-PJlsBI-1BpFyn',
                 }}
               >
                 <Routes>
